@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply minimal, reproducible AGAMES PRO branding to the pinned PPSSPP source tree."""
+"""Apply minimal, reproducible AGAMES PRO black-and-orange branding to the pinned PPSSPP source tree."""
 from pathlib import Path
 import sys
 
@@ -40,9 +40,9 @@ icon.write_text('''<?xml version="1.0" encoding="utf-8"?>
     android:viewportWidth="108"
     android:viewportHeight="108">
     <path android:fillColor="#0C1120" android:pathData="M0,0h108v108h-108z"/>
-    <path android:fillColor="#2669EB" android:pathData="M16,24h76a8,8 0,0 1,8 8v44a8,8 0,0 1,-8 8h-76a8,8 0,0 1,-8 -8v-44a8,8 0,0 1,8 -8z"/>
+    <path android:fillColor="#FF7A18" android:pathData="M16,24h76a8,8 0,0 1,8 8v44a8,8 0,0 1,-8 8h-76a8,8 0,0 1,-8 -8v-44a8,8 0,0 1,8 -8z"/>
     <path android:fillColor="#FFFFFF" android:pathData="M40,38l34,16 -34,16z"/>
-    <path android:fillColor="#8CB5FF" android:pathData="M22,18h64v4h-64z"/>
+    <path android:fillColor="#FFB36B" android:pathData="M22,18h64v4h-64z"/>
 </vector>
 ''', encoding="utf-8")
 print("AGAMES PRO branding applied to the PPSSPP Android app.")
