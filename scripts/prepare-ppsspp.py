@@ -16,6 +16,8 @@ g = gradle.read_text(encoding="utf-8")
 old = 'applicationId = "org.ppsspp.ppsspp"'
 if old not in g:
     raise SystemExit("Could not locate expected PPSSPP applicationId; review upstream changes.")
+# Upstream declares the ID in both defaultConfig and the normal product flavor.
+# Replace every occurrence so the installed APK consistently uses AGAMES PRO.
 g = g.replace(old, 'applicationId = "com.agames.pro"')
 # Use the latest stable Android SDK available to the build runner. The pinned
 # upstream revision targets API 37, which is not published in the runner SDK
