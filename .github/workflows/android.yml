@@ -19,9 +19,14 @@ jobs:
           distribution: temurin
           java-version: '21'
 
+      - name: Set up Android command-line tools
+        uses: android-actions/setup-android@v4
+        with:
+          packages: ''
+
       - name: Install Android SDK, NDK and CMake
         run: |
-          yes | sdkmanager --licenses
+          sdkmanager --licenses
           sdkmanager "platform-tools" "platforms;android-35" "build-tools;35.0.0" "ndk;28.2.13676358" "cmake;3.22.1"
 
       - name: Fetch official PPSSPP engine source at a fixed revision
