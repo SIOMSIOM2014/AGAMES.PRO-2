@@ -17,6 +17,14 @@ old = 'applicationId = "org.ppsspp.ppsspp"'
 if old not in g:
     raise SystemExit("Could not locate expected PPSSPP applicationId; review upstream changes.")
 g = g.replace(old, 'applicationId = "com.agames.pro"')
+# Use the latest stable Android SDK available to the build runner. The pinned
+# upstream revision targets API 37, which is not published in the runner SDK
+# repository yet; API 36 is supported by this revision's Android Gradle Plugin.
+if "compileSdk = 37" not in g or "targetSdk = 37" not in g or 'ndkVersion = "29.0.14206865"' not in g:
+    raise SystemExit("Expected upstream Android SDK/NDK settings changed; review before building.")
+g = g.replace("compileSdk = 37", "compileSdk = 36")
+g = g.replace("targetSdk = 37", "targetSdk = 36")
+g = g.replace('ndkVersion = "29.0.14206865"', 'ndkVersion = "28.2.13676358"')
 gradle.write_text(g, encoding="utf-8")
 
 s = strings.read_text(encoding="utf-8")
