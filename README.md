@@ -1,20 +1,21 @@
 # AGAMES PRO
 
-Android project for AGAMES PRO.
+AGAMES PRO is built on the open-source PPSSPP PSP emulator engine.
 
-## Included in this starter version
-- Arabic Android launcher interface.
-- Pick a game file from device storage.
-- Hand off the selected file to PPSSPP if it is installed, otherwise show compatible apps.
-- GitHub Actions workflow that builds a debug APK on pushes to `main` and on manual runs.
+## Build
 
-## Get the APK
-Open the repository's **Actions** tab, select **Android APK**, wait for a successful run, then download the **AGAMES-PRO-debug-APK** artifact.
+Open **Actions** in this repository and run **AGAMES PRO - Integrated PSP Emulator**. The workflow:
+1. Checks out a pinned PPSSPP source revision, including its submodules.
+2. Applies AGAMES PRO application branding and package ID.
+3. Builds the Android `normalDebug` variant with the Android NDK and CMake.
+4. Uploads an installable APK and a matching source archive.
 
-## Important current limitation
-The PSP emulation engine is **not bundled** in this version, and no game files are included. PSP playback currently depends on a compatible emulator installed separately. This is not yet a standalone PSP emulator or a verified final release.
+Download the artifact named **AGAMES-PRO-PSP-APK** after the workflow completes successfully.
 
-## Build requirements
-- Android 6.0+ (API 23+)
-- JDK 17
-- Android SDK Platform 35
+## Important
+
+- This is a PSP emulator build. It does not include commercial game files, firmware, or copyrighted game downloads.
+- Users must provide game files they are legally entitled to use.
+- Compatibility and performance vary by device, GPU, Android version, and game. No claim of universal compatibility is made.
+- The emulator engine is licensed under GPL-2.0-or-later. See `LICENSES/PPSSPP.md` and the accompanying source artifact.
+- The APK is a debug-signed test build, not a Play Store release. A separate private signing key is required for a signed release; never commit signing passwords or private keys.
