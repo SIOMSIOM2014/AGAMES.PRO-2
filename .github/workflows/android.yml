@@ -46,7 +46,7 @@ jobs:
         working-directory: ppsspp
         run: |
           chmod +x gradlew
-          ./gradlew --no-daemon :android:assembleNormalDebug
+          ./gradlew --no-daemon -PANDROID_VERSION_CODE=1 -PANDROID_VERSION_NAME=1.0.0 :android:assembleNormalDebug
 
       - name: Collect APK and corresponding source
         run: |
