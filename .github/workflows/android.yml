@@ -1,4 +1,4 @@
-name: Android APK
+name: AGAMES PRO - Integrated PSP Emulator
 on:
   push:
     branches: [ "main" ]
@@ -8,27 +8,61 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 120
     steps:
-      - name: Checkout
+      - name: Checkout AGAMES PRO configuration
         uses: actions/checkout@v4
-      - name: Set up JDK 17
+
+      - name: Set up Java
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
+          java-version: '21'
+
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
-      - name: Install Android platform
-        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-        with:
-          gradle-version: '8.9'
-      - name: Build debug APK
-        run: gradle --no-daemon assembleDebug
-      - name: Upload APK
+
+      - name: Install Android SDK, NDK and CMake
+        run: |
+          sdkmanager "platforms;android-37" "build-tools;37.0.0" "ndk;29.0.14206865" "cmake;3.31.6"
+
+      - name: Fetch official PPSSPP engine source at a fixed revision
+        run: |
+          git init ppsspp
+          cd ppsspp
+          git remote add origin https://github.com/hrydgard/ppsspp.git
+          git fetch --depth 1 origin 1aebad2c651ff9d0684ee335e43aceff8fc7e3ec
+          git checkout --detach FETCH_HEAD
+          git submodule update --init --recursive
+
+      - name: Apply AGAMES PRO branding
+        run: |
+          python3 scripts/prepare-ppsspp.py ppsspp
+
+      - name: Build integrated PSP emulator APK
+        working-directory: ppsspp
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon :android:assembleNormalDebug
+
+      - name: Collect APK and corresponding source
+        run: |
+          mkdir -p dist
+          APK="$(find ppsspp/android/build/outputs/apk -type f -name '*.apk' | head -n 1)"
+          test -n "$APK"
+          cp "$APK" dist/AGAMES-PRO-PSP.apk
+          tar -czf dist/AGAMES-PRO-PSP-source.tar.gz ppsspp scripts/prepare-ppsspp.py LICENSES
+
+      - name: Upload installable APK
         uses: actions/upload-artifact@v4
         with:
-          name: AGAMES-PRO-debug-APK
-          path: app/build/outputs/apk/debug/app-debug.apk
+          name: AGAMES-PRO-PSP-APK
+          path: dist/AGAMES-PRO-PSP.apk
+          if-no-files-found: error
+
+      - name: Upload corresponding source and build notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: AGAMES-PRO-PSP-source
+          path: dist/AGAMES-PRO-PSP-source.tar.gz
           if-no-files-found: error
